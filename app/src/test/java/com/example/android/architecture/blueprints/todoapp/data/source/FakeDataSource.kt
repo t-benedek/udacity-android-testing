@@ -3,13 +3,14 @@ package com.example.android.architecture.blueprints.todoapp.data.source
 import androidx.lifecycle.LiveData
 import com.example.android.architecture.blueprints.todoapp.data.Result
 import com.example.android.architecture.blueprints.todoapp.data.Task
+import kotlin.collections.List as List1
 
 class FakeDataSource(var tasks: MutableList<Task>? = mutableListOf()) : TasksDataSource {
 
-    override suspend fun getTasks(): Any {
+    override suspend fun getTasks(): Result<List1<Task>> {
         tasks?.let { return Result.Success(ArrayList(it)) }
 
-        return Error(
+        return Result.Error(
             Exception("Tasks not found")
         )
     }
@@ -22,7 +23,7 @@ class FakeDataSource(var tasks: MutableList<Task>? = mutableListOf()) : TasksDat
         tasks?.add(task)
     }
 
-    override fun observeTasks(): LiveData<Result<List<Task>>> {
+    override fun observeTasks(): LiveData<Result<List1<Task>>> {
         TODO("Not yet implemented")
     }
 
