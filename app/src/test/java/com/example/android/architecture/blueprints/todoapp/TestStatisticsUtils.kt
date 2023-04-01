@@ -9,16 +9,18 @@ import org.junit.*
 class TestStatisticsUtils {
     @Test
     fun getActiveAndCompletedStats_noCompleted_returnsHundredZero() {
+        // GIVEN One Task
         val tasks = listOf(
             Task("title", "desc", isCompleted = false)
         )
-        // When the list of tasks is computed with an active task
+        // WHEN we get all tasks
         val result = getActiveAndCompletedStats(tasks)
 
-        // Then the percentages are 100 and 0
+        // THEN there should be 100% active tasks and 0% completed tasks
         assertThat(result.activeTasksPercent, `is`(100f))
         assertThat(result.completedTasksPercent, `is`(0f))
     }
+
 
     @Test
     fun getActiveAndCompletedStats_noActive_returnsZeroHundred() {
