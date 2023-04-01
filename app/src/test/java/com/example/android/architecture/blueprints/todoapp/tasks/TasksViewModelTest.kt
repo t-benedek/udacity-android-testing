@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,22 +15,33 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class TasksViewModelTest {
 
+    // Subject under test
+    private lateinit var tasksViewModel: TasksViewModel
+
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    @Before
+    fun setupViewModel() {
+        tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+    }
+
+
     @Test
     fun addNewTask_setsNewTaskEvent() {
+        tasksViewModel.addNewTask()
+        val value = tasksViewModel.newTaskEvent.getOrAwaitValue()
 
-        // Given a fresh TasksViewModel
-        val testViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
-
-        // When adding a new task
-        testViewModel.addNewTask()
-
-        // Then the new task event is triggered
-        val value = testViewModel.newTaskEvent.getOrAwaitValue()
         assertThat(
             value.getContentIfNotHandled(), (not(nullValue()))
         )
+    }
+
+    @Test
+    fun setFilterAllTasks_tasksAddViewVisible() {
+        tasksViewModel.setFiltering(TasksFilterType.ALL_TASKS)
+        val value = tasksViewModel.tasksAddViewVisible.getOrAwaitValue()
+
+        assertTrue(value)
     }
 }
